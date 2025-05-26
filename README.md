@@ -29,30 +29,30 @@ It provides a Flask-based receiver service (Linux) or acts as a sender (Windows)
 在 Ubuntu 上執行以下指令安裝所需套件：  
 On Ubuntu, run the following commands to install required packages:
 
-\`\`\`bash
+```bash
 sudo apt update
 sudo apt install -y usbip usbutils python3 python3-pip libssl-dev
 sudo apt install -y python3-openssl python3-flask
 pip3 install pyOpenSSL requests
-\`\`\`
+```
 
 ---
 
 ## 🔧 核心模組掛載 / Kernel Modules (if not already built-in)
 
-\`\`\`bash
+```bash
 sudo modprobe vhci-hcd
 sudo modprobe usbip-core
 sudo modprobe usbip-host
-\`\`\`
+```
 
 ---
 
 ## 🔑 產生 SSL 憑證（可選）/ Generate SSL Certificates (Optional)
 
-\`\`\`bash
+```bash
 python3 usbip_helper.py --mode generate-cert
-\`\`\`
+```
 
 此指令會在當前目錄中建立 \`cert.pem\` 與 \`key.pem\`。
 
@@ -65,9 +65,9 @@ python3 usbip_helper.py --mode generate-cert
 在接收端 Linux 執行以下指令：  
 On the receiver (Linux):
 
-\`\`\`bash
+```bash
 python3 usbip_helper.py --mode receiver --port 8443 --cert cert.pem --key key.pem
-\`\`\`
+```
 
 此服務會監聽 HTTPS 連線，等待 Windows 發送可用的 busid 資料，並自動使用 \`usbip attach\` 掛載該裝置。
 
@@ -78,8 +78,8 @@ python3 usbip_helper.py --mode receiver --port 8443 --cert cert.pem --key key.pe
 在 Windows（已安裝 usbipd-win）上執行以下指令（可在 WSL、Python 環境執行）：  
 On the sender (Windows, with usbipd-win installed):
 
-\`\`\`bash
+```bash
 python3 usbip_helper.py --mode sender --target https://接收端IP:8443 --cert cert.pem --key key.pem --interval 10
-\`\`\`
+```
 
 此程式會每 10 秒執行一次 \`usbipd list\`，檢查當前共享的 USB 裝置，並將 busid 傳送給接收端。
